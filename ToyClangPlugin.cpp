@@ -27,12 +27,23 @@ namespace
         
         void checkForUnderscoreInName(ObjCInterfaceDecl *declaration)
         {
-            size_t underscorePos = declaration->getName().find('_');
+            StringRef name = declaration->getName();
+            size_t underscorePos = name.find('_');
             if (underscorePos != StringRef::npos) {
+                std::string tempName = name;
+                std::string::iterator end_pos = std::remove(tempName.begin(), tempName.end(), '_');
+                tempName.erase(end_pos, tempName.end());
+                StringRef replacement(tempName);
+                
+                SourceLocation nameStart = declaration->getLocation();
+                SourceLocation nameEnd = nameStart.getLocWithOffset(name.size());
+                
+                FixItHint fixItHint = FixItHint::CreateReplacement(SourceRange(nameStart, nameEnd), replacement);
+                
                 DiagnosticsEngine &diagEngine = context->getDiagnostics();
-                unsigned diagID = diagEngine.getCustomDiagID(DiagnosticsEngine::Error, "Class name with `_` disallowed");
+                unsigned diagID = diagEngine.getCustomDiagID(DiagnosticsEngine::Error, "Class name with `_` forbidden");
                 SourceLocation location = declaration->getLocation().getLocWithOffset(underscorePos);
-                diagEngine.Report(location, diagID);
+                diagEngine.Report(location, diagID).AddFixItHint(fixItHint);
             }
         }
         
@@ -41,10 +52,19 @@ namespace
             StringRef name = declaration->getName();
             char c = name[0];
             if (isLowercase(c)) {
+                std::string tempName = name;
+                tempName[0] = toUppercase(c);
+                StringRef replacement(tempName);
+                
+                SourceLocation nameStart = declaration->getLocation();
+                SourceLocation nameEnd = nameStart.getLocWithOffset(name.size());
+                
+                FixItHint fixItHint = FixItHint::CreateReplacement(SourceRange(nameStart, nameEnd), replacement);
+                
                 DiagnosticsEngine &diagEngine = context->getDiagnostics();
                 unsigned diagID = diagEngine.getCustomDiagID(DiagnosticsEngine::Warning, "Class name should not start with lowercase letter");
                 SourceLocation location = declaration->getLocation();
-                diagEngine.Report(location, diagID);
+                diagEngine.Report(location, diagID).AddFixItHint(fixItHint);
             }
         }
     };
