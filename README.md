@@ -1,6 +1,13 @@
 ## ToyClangPlugin
 
-Simple clang plugin
+Simple clang plugin.
+
+This plugin shows you a warning in case of class' name starts with lowercse letter and shows an error in case when class' name contains underscore (`_`).
+
+As a bonus it proposes you a FixIt hints
+
+![Warning FixItHint](https://raw.github.com/AlexDenisov/ToyClangPlugin/master/screenshots/warning_fixit_hint.png)
+![Error FixItHint](https://raw.github.com/AlexDenisov/ToyClangPlugin/master/screenshots/error_fixit_hint.png)
 
 ### Installation
 
@@ -47,7 +54,11 @@ Open your project and pudate build settings:
 
 1. Select custom compiler
 
+![Custom compiler](https://raw.github.com/AlexDenisov/ToyClangPlugin/master/screenshots/custom_compiler.png)
+
 2. Disable modules
+
+![Disable modules](https://raw.github.com/AlexDenisov/ToyClangPlugin/master/screenshots/disable_modules.png)
 
 3. Add `OTHER_CFLAGS`
 
@@ -55,5 +66,8 @@ Open your project and pudate build settings:
 -Xclang -load -Xclang /opt/llvm/toy_clang_plugin/build/lib/Debug/ToyClangPlugin.dylib -Xclang -add-plugin -Xclang ToyClangPlugin
 ```
 
-Build and run
+![Other C flags](https://raw.github.com/AlexDenisov/ToyClangPlugin/master/screenshots/other_cflags.png)
+
+
+Build and run, you'll have build dynamic library at `build/lib/Debug/ToyClangPlugin.dylib`
 
