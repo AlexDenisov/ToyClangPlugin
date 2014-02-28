@@ -44,8 +44,11 @@ sudo mv HackedBuildSystem.xcspec `xcode-select -print-path`/Platforms/iPhoneSimu
 ```
 
 Open your project and pudate build settings:
+
 1. Select custom compiler
+
 2. Disable modules
+
 3. Add `OTHER_CFLAGS`
 
 ```
