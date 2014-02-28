@@ -1,6 +1,6 @@
 ## ToyClangPlugin
 
-Simple clang plugin.
+Simple clang plugin. More details [here](http://l.rw.rw/clang_plugin)
 
 This plugin shows you a warning in case of class' name starts with lowercse letter and shows an error in case when class' name contains underscore (`_`).
 
