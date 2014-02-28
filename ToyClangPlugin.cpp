@@ -20,8 +20,20 @@ namespace
         
         bool VisitObjCInterfaceDecl(ObjCInterfaceDecl *declaration)
         {
-            checkForLowercasedName(declaration);
+//            checkForLowercasedName(declaration);
+            checkForUnderscoreInName(declaration);
             return true;
+        }
+        
+        void checkForUnderscoreInName(ObjCInterfaceDecl *declaration)
+        {
+            size_t underscorePos = declaration->getName().find('_');
+            if (underscorePos != StringRef::npos) {
+                DiagnosticsEngine &diagEngine = context->getDiagnostics();
+                unsigned diagID = diagEngine.getCustomDiagID(DiagnosticsEngine::Error, "Class name with `_` disallowed");
+                SourceLocation location = declaration->getLocation().getLocWithOffset(underscorePos);
+                diagEngine.Report(location, diagID);
+            }
         }
         
         void checkForLowercasedName(ObjCInterfaceDecl *declaration)
