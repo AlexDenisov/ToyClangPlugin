@@ -20,7 +20,7 @@ namespace
         
         bool VisitObjCInterfaceDecl(ObjCInterfaceDecl *declaration)
         {
-//            checkForLowercasedName(declaration);
+            checkForLowercasedName(declaration);
             checkForUnderscoreInName(declaration);
             return true;
         }
