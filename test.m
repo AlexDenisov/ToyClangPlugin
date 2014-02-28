@@ -8,3 +8,11 @@
 
 @end
 
+@interface bad_ToyObject : NSObject
+
+@end
+
+@implementation bad_ToyObject
+
+@end
+

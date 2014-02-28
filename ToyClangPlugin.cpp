@@ -10,11 +10,30 @@ namespace
     
     class ToyClassVisitor : public RecursiveASTVisitor<ToyClassVisitor>
     {
+    private:
+        ASTContext *context;
     public:
+        void setContext(ASTContext &context)
+        {
+            this->context = &context;
+        }
+        
         bool VisitObjCInterfaceDecl(ObjCInterfaceDecl *declaration)
         {
-            printf("ObjClass: %s\n", declaration->getNameAsString().c_str());
+            checkForLowercasedName(declaration);
             return true;
+        }
+        
+        void checkForLowercasedName(ObjCInterfaceDecl *declaration)
+        {
+            StringRef name = declaration->getName();
+            char c = name[0];
+            if (isLowercase(c)) {
+                DiagnosticsEngine &diagEngine = context->getDiagnostics();
+                unsigned diagID = diagEngine.getCustomDiagID(DiagnosticsEngine::Warning, "Class name should not start with lowercase letter");
+                SourceLocation location = declaration->getLocation();
+                diagEngine.Report(location, diagID);
+            }
         }
     };
     
@@ -22,6 +41,7 @@ namespace
     {
     public:
         void HandleTranslationUnit(ASTContext &context) {
+            visitor.setContext(context);
             visitor.TraverseDecl(context.getTranslationUnitDecl());
         }
     private:
