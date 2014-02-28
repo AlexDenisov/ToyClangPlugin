@@ -68,6 +68,4 @@ Open your project and pudate build settings:
 
 ![Other C flags](https://raw.github.com/AlexDenisov/ToyClangPlugin/master/screenshots/other_cflags.png)
 
-
-Build and run, you'll have build dynamic library at `build/lib/Debug/ToyClangPlugin.dylib`
-
+That's it. Build and run you project.
