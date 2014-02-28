@@ -8,8 +8,24 @@ using namespace clang;
 namespace
 {
     
+    class ToyClassVisitor : public RecursiveASTVisitor<ToyClassVisitor>
+    {
+    public:
+        bool VisitObjCInterfaceDecl(ObjCInterfaceDecl *declaration)
+        {
+            printf("ObjClass: %s\n", declaration->getNameAsString().c_str());
+            return true;
+        }
+    };
+    
     class ToyConsumer : public ASTConsumer
     {
+    public:
+        void HandleTranslationUnit(ASTContext &context) {
+            visitor.TraverseDecl(context.getTranslationUnitDecl());
+        }
+    private:
+        ToyClassVisitor visitor;
     };
 
     class ToyASTAction : public PluginASTAction
