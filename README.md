@@ -34,6 +34,7 @@ Get the plugin copy
 ```bash
 cd $LLVM_HOME
 git clone https://github.com/AlexDenisov/ToyClangPlugin.git
+cd ToyClangPlugin
 ```
 
 Build the plugin
